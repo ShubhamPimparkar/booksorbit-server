@@ -1,11 +1,14 @@
 package com.app.entities;
 
-import java.sql.Blob;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,13 +27,13 @@ import lombok.ToString;
 public class Order {
 
 	@Id
-	//@Generated(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 	
-	private Book bookId;
-	private User userId;
-	private Seller sellerId;
-	private int quantity;
-	private float price;
+	@OneToOne
+	@JoinColumn(name = "cartitem_id")
+	private CartItem cartItemID;
+	
+	@Column(name = "user_id")
 	private LocalDate orderDate;
 }

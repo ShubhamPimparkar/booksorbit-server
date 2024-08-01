@@ -2,6 +2,8 @@ package com.app.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,19 +22,19 @@ import lombok.ToString;
 @Table(name = "Address")
 public class Address {
 	@Id
-//	@Generated(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
 	
-	@Column(name = "Area")
+	@Column(name = "area")
 	private String Area;
 	
-	@Column(name = "City")
+	@Column(name = "city")
 	private String City;
 	
-	@Column(name = "State")
+	@Column(name = "state")
 	private String State;
 	
-	@Column(name = "Pincode")
+	@Column(name = "pincode" , length = 6)
 	private int pincode;
 	
 }

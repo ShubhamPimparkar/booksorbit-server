@@ -2,11 +2,19 @@ package com.app.entities;
 
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,30 +32,41 @@ import lombok.ToString;
 public class Book {
 
 	@Id
-	//@Generated(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
 	
 	@Column(name = "b_name")
 	private String bookName;
 		
-	@Column(name = "c_Id")
-	private Comment comment_id;
+	@OneToMany(mappedBy = "bookId")
+	private List<Comment> comments;
 	
-	@Column(name = "b_name")
+	@Column(name = "auth_name")
 	private String author_Name;
 	
-	@Column(name = "b_qantity")
+	@Column(name = "quantity")
 	private int quantity;
 	
-	@Column(name = "Added_date")
+	@CreatedDate
+	@Column(name = "added_date")
 	private LocalDate added_date;
+	
+	@ManyToOne
+	@JoinColumn(name = "category")
+	private Category choosenCat;
 	
 	@Column(name = "image")
 	private Blob image;
 	
-	@Column(name = "s_id")
+	@ManyToOne
+	@JoinColumn(name = "s_id")
 	private Seller sellerId;
 	
-	@Column(name = "rating")
+	@Column(name = "rating",length = 5)
 	private int rating;
+	
+	@ManyToOne
+	@JoinColumn(name = "Cartitem_id")
+	private CartItem cartItemID;
 }
+

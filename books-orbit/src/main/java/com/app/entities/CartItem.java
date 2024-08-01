@@ -1,8 +1,15 @@
 package com.app.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,15 +28,21 @@ import lombok.ToString;
 public class CartItem {
 
 	@Id
-//	@Generated(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cartItemId;
 	
-	@Column(name="Quantity")
+	@Column(name="quantity")
 	private int quantity;
 	
-	@Column(name = "Price")
-	private float price;
+	@ManyToOne
+	@JoinColumn(name = "cart_id")
+	private Cart cartId;
 	
-	@Column(name="BookId")
-	private Book bookId;
+	@Column(name = "price")
+	private float price;
+//	
+//	@OneToMany
+//	private List<Book> bookId;
+	
+	
 }
