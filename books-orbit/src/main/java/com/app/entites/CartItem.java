@@ -1,39 +1,38 @@
-package com.app.entities;
+package com.app.entites;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Entity(name = "Comments")
-@Getter
-@Setter
+@Entity
+@Table(name = "cart_items")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Comment {
+public class CartItem {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long commentId;
+	private Long cartItemId;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User userId;
+	@JoinColumn(name = "cart_id")
+	private Cart cart;
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
-	private Book bookId;
+	private Books product;
 	
-	@Column(name="comment_msg")
-	private String commentMsg;
+	private Integer quantity;
+	private double discount;
+	private double productPrice;
+	
 }
