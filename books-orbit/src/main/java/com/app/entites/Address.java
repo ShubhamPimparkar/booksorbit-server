@@ -22,7 +22,7 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
-
+//address
 	private String street;
 	
 	private String buildingName;
