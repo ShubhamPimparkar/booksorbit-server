@@ -1,7 +1,13 @@
 package com.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +31,22 @@ public class UserController {
 
 	@PostMapping
 	private ResponseEntity<ApiResponse> addUser(@RequestBody UserDTO userDTO) {
-
 		User user = convertToEntity(userDTO);
 		ApiResponse res = userService.addUser(user);
 		return ResponseEntity.ok(res);
+	}
+	
+	@GetMapping
+	private ResponseEntity<List<User>> getUsers(){
+		List<User> list = userService.getUsers();
+		return ResponseEntity.ok(list);
+	}
 
+	@DeleteMapping("/{uid}")
+	private ResponseEntity<ApiResponse> delUser(@PathVariable Long uid) {
+		ApiResponse api =  userService.delUser(uid);
+		return ResponseEntity.ok(api);
+		
 	}
 	
 	private User convertToEntity(UserDTO userDTO) {
@@ -40,6 +57,7 @@ public class UserController {
 		user.setMobileNumber(userDTO.getMobileNumber());
 		user.setPassword(userDTO.getPassword());
 		user.setRole(userDTO.getRole());
+		
 		if (userDTO.getAddress() != null) {
 			Address address = new Address();
 			address.setStreet(userDTO.getAddress().getStreet());
