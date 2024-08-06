@@ -33,13 +33,13 @@ public class Books {
 	
 	private String description;
 	
-	private Integer quantity;
+	private Integer quantity; 
 	
 	private double price;
 
 	@ManyToOne
 	@JoinColumn(name = "seller_id")
-	private User sellerId;
+	private User seller;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")

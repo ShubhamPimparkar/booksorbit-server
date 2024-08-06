@@ -13,5 +13,9 @@ public interface UserService {
 	List<User> getUsers();
 
 	ApiResponse delUser(Long uid);
+
+	User getById(Long userId);
+
+
 	
 }

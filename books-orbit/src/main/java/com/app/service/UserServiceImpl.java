@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.dtos.UserIdDto;
 import com.app.entites.User;
 import com.app.repository.UserRepo;
 import com.app.response.ApiResponse;
@@ -35,5 +36,13 @@ public class UserServiceImpl implements UserService {
 		userRepo.deleteById(uid);
 		return new ApiResponse("User Deleted");
 	}
+
+	@Override
+	public User getById(Long userId) {
+		
+		return userRepo.findById(userId).get();
+	}
+
+	
 
 }
