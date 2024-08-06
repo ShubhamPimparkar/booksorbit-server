@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,16 @@ public class BookServiceImpl implements BookService {
 	public ApiResponse addBook(Books book) {
 		bookRepo.save(book);
 		return new ApiResponse("Book Inserted");
+	}
+	@Override
+	public List<Books> getBooks() {
+		
+		return bookRepo.findAll();
+	}
+	@Override
+	public ApiResponse delBook(Long bid) {
+		bookRepo.deleteById(bid);
+		return new ApiResponse("Book Deleted");
 	}
 
 }
