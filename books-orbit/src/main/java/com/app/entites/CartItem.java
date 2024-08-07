@@ -29,10 +29,10 @@ public class CartItem {
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
-	private Books product;
+	private Books book;
 	
 	private Integer quantity;
-	private double discount;
-	private double productPrice;
+
+	private double bookPrice;
 	
 }

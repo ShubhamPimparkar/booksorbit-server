@@ -12,5 +12,7 @@ public interface BookService {
 	List<Books> getBooks();
 
 	ApiResponse delBook(Long bid);
+
+	Books getBook(Long bid);
 	
 }

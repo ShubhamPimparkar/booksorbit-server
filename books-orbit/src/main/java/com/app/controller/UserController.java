@@ -3,7 +3,6 @@ package com.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.UserDTO;
 import com.app.entites.Address;
+import com.app.entites.Cart;
 import com.app.entites.User;
 import com.app.response.ApiResponse;
 import com.app.service.AddressService;
+import com.app.service.CartService;
 import com.app.service.UserService;
 
 @RestController
@@ -29,10 +30,17 @@ public class UserController {
 	@Autowired
 	private AddressService addService;
 
+	@Autowired
+	private CartService cartService;
+	
 	@PostMapping
 	private ResponseEntity<ApiResponse> addUser(@RequestBody UserDTO userDTO) {
 		User user = convertToEntity(userDTO);
+		Cart cart = new Cart();
+		user.setCart(cart);
 		ApiResponse res = userService.addUser(user);
+		cart.setUser(user);
+		cartService.addCart(cart);
 		return ResponseEntity.ok(res);
 	}
 	

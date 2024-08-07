@@ -31,5 +31,10 @@ public class BookServiceImpl implements BookService {
 		bookRepo.deleteById(bid);
 		return new ApiResponse("Book Deleted");
 	}
+	@Override
+	public Books getBook(Long bid) {
+		Books book = bookRepo.findById(bid).get();
+		return book;
+	}
 
 }

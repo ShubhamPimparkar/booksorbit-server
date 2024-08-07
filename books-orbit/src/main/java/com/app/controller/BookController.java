@@ -3,6 +3,7 @@ package com.app.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.BookDTO;
+import com.app.dtos.BookDTO2;
 import com.app.dtos.CategoryIdDto;
 import com.app.dtos.UserIdDto;
 import com.app.entites.Books;
@@ -34,6 +36,8 @@ public class BookController {
 	@Autowired
 	private CatService catService;
 	@Autowired
+	private ModelMapper mapper;
+	@Autowired
 	private UserService userService;
 	
 	
@@ -53,11 +57,21 @@ public class BookController {
 		
 		return ResponseEntity.ok(list);		
 	}
-
+	@GetMapping("/{bid}")
+	private ResponseEntity<BookDTO2> getBook(@PathVariable Long bid){
+		Books book1 = bookService.getBook(bid);
+		BookDTO2 book = mapper.map(book1, BookDTO2.class);
+		return ResponseEntity.ok(book);		
+	}
+	
+	
+	
 	@DeleteMapping("/{bid}")
 	private ResponseEntity<ApiResponse> delBook(@PathVariable Long bid){
 		return ResponseEntity.ok(bookService.delBook(bid));
 	}
+	
+	
 	
 	private Books mapToEntity(BookDTO bookDto) {
 
