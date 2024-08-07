@@ -37,14 +37,14 @@ public class CartController {
 		
 		return new ResponseEntity<List<CartDTO>>(cartDTOs, HttpStatus.FOUND);
 	}
-//	
-//	@GetMapping("/public/users/{emailId}/carts/{cartId}")
-//	public ResponseEntity<CartDTO> getCartById(@PathVariable String emailId, @PathVariable Long cartId) {
-//		CartDTO cartDTO = cartService.getCart(emailId, cartId);
-//		
-//		return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.FOUND);
-//	}
-//	
+	
+	@GetMapping("/user/{emailId}")
+	public ResponseEntity<CartDTO> getCartById(@PathVariable String emailId) {
+		CartDTO cartDTO = cartService.getCart(emailId);
+		
+		return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.FOUND);
+	}
+	
 //	@PutMapping("/public/carts/{cartId}/products/{productId}/quantity/{quantity}")
 //	public ResponseEntity<CartDTO> updateCartProduct(@PathVariable Long cartId, @PathVariable Long productId, @PathVariable Integer quantity) {
 //		CartDTO cartDTO = cartService.updateProductQuantityInCart(cartId, productId, quantity);

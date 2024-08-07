@@ -13,11 +13,13 @@ import com.app.dtos.CartDTO;
 import com.app.entites.Books;
 import com.app.entites.Cart;
 import com.app.entites.CartItem;
+import com.app.entites.User;
 import com.app.exceptions.APIException;
 import com.app.exceptions.ResourceNotFoundException;
 import com.app.repository.BookRepo;
 import com.app.repository.CartItemRepo;
 import com.app.repository.CartRepo;
+import com.app.repository.UserRepo;
 
 @Service
 @Transactional
@@ -29,6 +31,8 @@ public class CartServiceImpl implements CartService {
 	private BookRepo bookRepo;
 	@Autowired
 	private CartRepo cartRepo;
+	@Autowired
+	private UserRepo userRepo;
 	@Autowired
 	private CartItemRepo cartItemRepo;
 
@@ -137,5 +141,26 @@ public class CartServiceImpl implements CartService {
 		System.out.println("--------------Delete cartitem----------------");
 
 		return "Product " + cartItem.getBook().getBookName() + " removed from the cart !!!";
+	}
+
+	@Override
+	public CartDTO getCart(String emailId) {
+			
+		User user = userRepo.findByEmail(emailId);
+		Cart cart = cartRepo.findByUser(user);
+
+		if (cart == null) {
+			throw new ResourceNotFoundException("User", "emailId", emailId);
+		}
+
+		CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+		
+		List<BookDTO2> books = cart.getCartItems().stream()
+				.map(p -> modelMapper.map(p.getBook(), BookDTO2.class)).collect(Collectors.toList());
+
+		cartDTO.setProducts(books);
+
+		return cartDTO;
+	
 	}
 }
