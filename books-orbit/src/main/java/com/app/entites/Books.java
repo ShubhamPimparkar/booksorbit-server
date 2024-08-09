@@ -32,6 +32,7 @@ public class Books {
 	
 	
 	private String description;
+	private String imgUrl;
 	
 	private Integer quantity; 
 	

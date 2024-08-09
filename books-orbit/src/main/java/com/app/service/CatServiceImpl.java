@@ -33,7 +33,7 @@ public class CatServiceImpl implements CatService {
 	}
 	@Override
 	public Category getById(Long cateId) {
-		// TODO Auto-generated method stub
+		
 		return catRepo.findById(cateId).get();
 	}
 	

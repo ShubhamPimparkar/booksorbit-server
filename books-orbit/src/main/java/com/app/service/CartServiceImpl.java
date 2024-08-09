@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dtos.BookDTO2;
 import com.app.dtos.CartDTO;
+import com.app.dtos.CartItemDTO;
 import com.app.entites.Books;
 import com.app.entites.Cart;
 import com.app.entites.CartItem;
@@ -50,15 +51,40 @@ public class CartServiceImpl implements CartService {
 				.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", bookId));
 		System.out.println("Book FOund-----------------");
 
+		CartItem cartItem = cartItemRepo.findCartItemByCartAndBook(cart,product);
+		if (cartItem != null) {
+//			throw new APIException("Product " + product.getBookName() + " already exists in the cart");
+
+			
+			cartItem.setQuantity(cartItem.getQuantity() +quantity);
+			
+
+			cartItemRepo.save(cartItem);
+
+			product.setQuantity(product.getQuantity() - quantity);
+
+			cart.setTotalPrice((cart.getTotalPrice() + cartItem.getBookPrice()) * quantity);
+			cartRepo.save(cart);
+
+			CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+
+			List<BookDTO2> productDTOs = cart.getCartItems().stream()
+					.map(p -> modelMapper.map(p.getBook(), BookDTO2.class)).collect(Collectors.toList());
+
+			cartDTO.setProducts(productDTOs);
+
+			return cartDTO;
+			
+			
+		}else {
+			
+		
+
 		CartItem newCartItem = new CartItem();
 		newCartItem.setCart(cart);
-//		CartItem cartItem = cartItemRepo.findCartItemByCart(cartId);
 		System.out.println("Cartitem FOund-----------------");
 
-//		if (cartItem != null) {
-//			throw new APIException("Product " + product.getBookName() + " already exists in the cart");
-//		}
-
+		
 		if (product.getQuantity() == 0) {
 			throw new APIException(product.getBookName() + " is not available");
 		}
@@ -90,6 +116,7 @@ public class CartServiceImpl implements CartService {
 		cartDTO.setProducts(productDTOs);
 
 		return cartDTO;
+		}
 	}
 
 	@Override
@@ -122,11 +149,11 @@ public class CartServiceImpl implements CartService {
 				.orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
 		Books book1 = bookRepo.findById(bookId)
 				.orElseThrow(() -> new ResourceNotFoundException("Books", "bookId", bookId));
-		System.out.println("--------------Found cart----------------");
+		
 
 		CartItem cartItem = cartItemRepo.findByBookAndCart(book1, cart);
 		
-		System.out.println("--------------Found cartitem----------------");
+		
 		if (cartItem == null) {
 			throw new ResourceNotFoundException("Books", "bookId", bookId);
 		}
@@ -138,7 +165,7 @@ public class CartServiceImpl implements CartService {
 		book.setQuantity(book.getQuantity() + cartItem.getQuantity());
 		bookRepo.save(book);
 		cartItemRepo.deleteCartItemByBookAndCart(book1,cart);
-		System.out.println("--------------Delete cartitem----------------");
+	
 
 		return "Product " + cartItem.getBook().getBookName() + " removed from the cart !!!";
 	}
@@ -162,5 +189,37 @@ public class CartServiceImpl implements CartService {
 
 		return cartDTO;
 	
+	}
+
+	@Override
+	public CartDTO getCartById(Long cartId) {
+		Cart cart = cartRepo.findById(cartId).get();
+		CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+		List<BookDTO2> books = cart.getCartItems().stream()
+				.map(p -> modelMapper.map(p.getBook(), BookDTO2.class)).collect(Collectors.toList());
+
+		cartDTO.setProducts(books);
+		return cartDTO;
+	}
+
+	@Override
+	public List<CartItemDTO> getCartItemsById(Long cartId) {
+		Cart cart = cartRepo.findById(cartId).get();
+		List<CartItem> list = cart.getCartItems();
+		
+		List<CartItemDTO> cartItems = list.stream()
+				.map(p -> {
+					CartItemDTO cdtos = modelMapper.map(p, CartItemDTO.class);
+					
+					BookDTO2 products = modelMapper.map(p.getBook(), BookDTO2.class);
+
+					cdtos.setProduct(products);
+
+					return cdtos;
+				
+				}).collect(Collectors.toList());
+
+		
+		return cartItems;
 	}
 }

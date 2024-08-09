@@ -13,7 +13,7 @@ public class BookDTO {
 	private String bookName;
 
 	private String description;
-
+	private String imgUrl;
 	private Integer quantity;
 
 	private double price;

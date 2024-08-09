@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.app.service.BookService;
 import com.app.service.CatService;
 import com.app.service.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/books")
 public class BookController {
@@ -48,6 +50,7 @@ public class BookController {
 		return ResponseEntity.ok(bookService.addBook(book));
 	
 	}
+	
 	@GetMapping
 	private ResponseEntity<List<BookDTO>> getBooks(){
 		List<Books> list2 = bookService.getBooks();
@@ -80,6 +83,7 @@ public class BookController {
 		book.setDescription(bookDto.getDescription());
 		book.setQuantity(bookDto.getQuantity());
 		book.setPrice(bookDto.getPrice());
+		book.setImgUrl(bookDto.getImgUrl());
 		
 		User user = userService.getById(bookDto.getSellerId().getUserId());
 		Category cat = catService.getById(bookDto.getCategoryId().getCateId());
@@ -97,6 +101,7 @@ public class BookController {
         dto.setDescription(book.getDescription());
         dto.setQuantity(book.getQuantity());
         dto.setPrice(book.getPrice());
+        dto.setImgUrl(book.getImgUrl());
         dto.setSellerId(new UserIdDto(book.getSeller().getUserId())); 
         dto.setCategoryId(new CategoryIdDto(book.getCategory().getCategoryId()));
         

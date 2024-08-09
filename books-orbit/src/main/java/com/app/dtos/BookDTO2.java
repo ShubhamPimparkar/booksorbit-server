@@ -13,6 +13,7 @@ public class BookDTO2 {
 	private String bookName;
 
 	private String description;
+	private String imgUrl;
 
 	private Integer quantity;
 
