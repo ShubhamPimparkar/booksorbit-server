@@ -21,6 +21,7 @@ import com.app.repository.BookRepo;
 import com.app.repository.CartItemRepo;
 import com.app.repository.CartRepo;
 import com.app.repository.UserRepo;
+import com.app.response.ApiResponse;
 
 @Service
 @Transactional
@@ -222,4 +223,20 @@ public class CartServiceImpl implements CartService {
 		
 		return cartItems;
 	}
+
+	@Override
+	public ApiResponse updateItems(Long cartItemId, Long bookid, Integer quant) {
+		Books book = bookRepo.findById(bookid).get();
+		CartItem item = cartItemRepo.findByCartItemIdAndBook(cartItemId,book);
+		item.setQuantity(item.getQuantity()+quant);
+		book.setQuantity(book.getQuantity() + quant);
+		bookRepo.save(book);
+		Cart cart = item.getCart();
+		cart.setTotalPrice(cart.getTotalPrice() + (book.getPrice()*quant));
+		cartRepo.save(cart);
+		cartItemRepo.save(item);
+		return new ApiResponse("Quantity +/- Updated");
+	}
+
+	
 }

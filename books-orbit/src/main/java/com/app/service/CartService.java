@@ -5,6 +5,7 @@ import java.util.List;
 import com.app.dtos.CartDTO;
 import com.app.dtos.CartItemDTO;
 import com.app.entites.Cart;
+import com.app.response.ApiResponse;
 
 public interface CartService {
 	void addCart(Cart cart);
@@ -20,5 +21,9 @@ public interface CartService {
 	CartDTO getCartById(Long cartId);
 
 	List<CartItemDTO> getCartItemsById(Long cartId);
+
+	ApiResponse updateItems(Long cartItemId, Long bookid, Integer quant);
+
+	
 	
 }

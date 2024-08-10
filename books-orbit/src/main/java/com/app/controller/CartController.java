@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.CartDTO;
 import com.app.dtos.CartItemDTO;
+import com.app.response.ApiResponse;
 import com.app.service.CartService;
 
 @CrossOrigin
@@ -59,6 +61,12 @@ public class CartController {
 		
 		return  ResponseEntity.ok(cartItemDTO);
 	}
+	@PutMapping("/updateItems/cartitemid/{cartItemId}/bookid/{bookid}/quantity/{quant}")
+	public ResponseEntity<ApiResponse> updateCartItems(@PathVariable Long cartItemId,@PathVariable Long bookid,@PathVariable Integer quant) {
+		ApiResponse api = cartService.updateItems(cartItemId,bookid,quant);
+		
+		return  ResponseEntity.ok(api);
+	}
 	
 //	@PutMapping("/public/carts/{cartId}/products/{productId}/quantity/{quantity}")
 //	public ResponseEntity<CartDTO> updateCartProduct(@PathVariable Long cartId, @PathVariable Long productId, @PathVariable Integer quantity) {
@@ -73,4 +81,12 @@ public class CartController {
 		
 		return new ResponseEntity<String>(status, HttpStatus.OK);
 	}
+	
+//
+//	@DeleteMapping("bookId/{bookId}")
+//	public ResponseEntity<ApiResponse> deletebookFromCart( @PathVariable Long bookId) {
+//		ApiResponse status = cartService.deletebookFromCart( bookId);
+//		
+//		return new ResponseEntity<ApiResponse>(status, HttpStatus.OK);
+//	}
 }
