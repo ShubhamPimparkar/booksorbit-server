@@ -84,6 +84,7 @@ public class BookController {
 		book.setQuantity(bookDto.getQuantity());
 		book.setPrice(bookDto.getPrice());
 		book.setImgUrl(bookDto.getImgUrl());
+		book.setAuthorName(bookDto.getAuthorName());
 		
 		User user = userService.getById(bookDto.getSellerId().getUserId());
 		Category cat = catService.getById(bookDto.getCategoryId().getCateId());
@@ -99,6 +100,7 @@ public class BookController {
         dto.setBookId(book.getBookId());
         dto.setBookName(book.getBookName());
         dto.setDescription(book.getDescription());
+        dto.setAuthorName(book.getAuthorName());
         dto.setQuantity(book.getQuantity());
         dto.setPrice(book.getPrice());
         dto.setImgUrl(book.getImgUrl());
