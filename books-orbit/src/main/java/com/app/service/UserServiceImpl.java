@@ -2,10 +2,13 @@ package com.app.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.dtos.AddressDTO;
+import com.app.dtos.UserDTO;
 import com.app.dtos.UserIdDto;
 import com.app.entites.User;
 import com.app.repository.UserRepo;
@@ -17,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepo userRepo; 
+	@Autowired
+	private ModelMapper	modelMapper; 
 	
 	@Override
 	public ApiResponse addUser(User user) {
@@ -41,6 +46,15 @@ public class UserServiceImpl implements UserService {
 	public User getById(Long userId) {
 		
 		return userRepo.findById(userId).get();
+	}
+
+	@Override
+	public UserDTO getUser(String email, String password) {
+		User user = userRepo.findUserByEmailAndPassword(email,password);
+		UserDTO udto = modelMapper.map(user, UserDTO.class);
+		AddressDTO add = modelMapper.map(user.getAddress(), AddressDTO.class);
+		udto.setAddress(add);
+		return udto;
 	}
 
 	

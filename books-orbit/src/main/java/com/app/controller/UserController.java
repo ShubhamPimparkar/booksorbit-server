@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.UserDTO;
+import com.app.dtos.UserLoginDTO;
 import com.app.entites.Address;
 import com.app.entites.Cart;
 import com.app.entites.User;
@@ -21,6 +23,7 @@ import com.app.service.AddressService;
 import com.app.service.CartService;
 import com.app.service.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -42,6 +45,13 @@ public class UserController {
 		cart.setUser(user);
 		cartService.addCart(cart);
 		return ResponseEntity.ok(res);
+	}
+	@PostMapping("/login")
+	private ResponseEntity<UserDTO> getUserById(@RequestBody UserLoginDTO userlogin){
+//		System.out.println(userlogin.getUsername());
+//		System.out.println(userlogin.getPassword());
+		UserDTO dto = userService.getUser(userlogin.getUsername(),userlogin.getPassword());
+		return  ResponseEntity.ok(dto);
 	}
 	
 	@GetMapping
