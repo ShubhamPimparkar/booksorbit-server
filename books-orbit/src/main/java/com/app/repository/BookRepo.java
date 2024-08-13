@@ -6,4 +6,6 @@ import com.app.entites.Books;
 
 public interface BookRepo extends JpaRepository<Books, Long> {
 
+	Books findBooksByBookName(String bname);
+
 }

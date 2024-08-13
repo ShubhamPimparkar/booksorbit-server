@@ -14,5 +14,9 @@ public interface BookService {
 	ApiResponse delBook(Long bid);
 
 	Books getBook(Long bid);
+
+	ApiResponse addToFav(Long bid, Long uid);
+
+	Books getBookName(String bname);
 	
 }

@@ -1,14 +1,18 @@
 package com.app.entites;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -36,27 +40,26 @@ public class User {
 	private String email;
 	private String password;
 
-//	@OneToOne
-//	@JoinColumn(name = "role_id")
-//	private Role role;
-	
+	private String city;
+	private String state;
+	private String country;
+
 	@Enumerated(EnumType.STRING)
 	private RoleEnum role;
-	
-//	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-//	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//	private Set<Role> roles = new HashSet<>();
 
-//	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-//	@JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
-//	private List<Address> addresses = new ArrayList<>();
-	
-	@OneToOne(cascade = CascadeType.REMOVE,orphanRemoval = true)
-	@JoinColumn(name = "address_id")
-	private Address address;
+//	@OneToOne(cascade = CascadeType.REMOVE,orphanRemoval = true)
+//	@JoinColumn(name = "address_id")
+//	private Address address;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+	@OneToOne(mappedBy = "user", cascade = { CascadeType.REMOVE, CascadeType.PERSIST,
+			CascadeType.MERGE }, orphanRemoval = true)
 	private Cart cart;
+
+	@ManyToMany
+	@JoinTable(name = "user_favorite_books", joinColumns = @JoinColumn(name = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "book_id"))
+	private Set<Books> favoriteBooks;
+	
 
 }

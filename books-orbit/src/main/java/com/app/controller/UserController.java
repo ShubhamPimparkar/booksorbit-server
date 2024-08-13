@@ -48,8 +48,8 @@ public class UserController {
 	}
 	@PostMapping("/login")
 	private ResponseEntity<UserDTO> getUserById(@RequestBody UserLoginDTO userlogin){
-//		System.out.println(userlogin.getUsername());
-//		System.out.println(userlogin.getPassword());
+		System.out.println(userlogin.getUsername());
+		System.out.println(userlogin.getPassword());
 		UserDTO dto = userService.getUser(userlogin.getUsername(),userlogin.getPassword());
 		return  ResponseEntity.ok(dto);
 	}
@@ -75,18 +75,21 @@ public class UserController {
 		user.setMobileNumber(userDTO.getMobileNumber());
 		user.setPassword(userDTO.getPassword());
 		user.setRole(userDTO.getRole());
+		user.setCity(userDTO.getCity());
+		user.setState(userDTO.getState());
+		user.setCountry(userDTO.getCountry());
 		
-		if (userDTO.getAddress() != null) {
-			Address address = new Address();
-			address.setStreet(userDTO.getAddress().getStreet());
-			address.setBuildingName(userDTO.getAddress().getBuildingName());
-			address.setCity(userDTO.getAddress().getCity());
-			address.setState(userDTO.getAddress().getState());
-			address.setPincode(userDTO.getAddress().getPincode());
-			address.setCountry(userDTO.getAddress().getCountry());
-			user.setAddress(address);
-			addService.saveAdd(address);
-		}
+//		if (userDTO.getAddress() != null) {
+//			Address address = new Address();
+//			address.setStreet(userDTO.getAddress().getStreet());
+//			address.setBuildingName(userDTO.getAddress().getBuildingName());
+//			address.setCity(userDTO.getAddress().getCity());
+//			address.setState(userDTO.getAddress().getState());
+//			address.setPincode(userDTO.getAddress().getPincode());
+//			address.setCountry(userDTO.getAddress().getCountry());
+//			user.setAddress(address);
+//			addService.saveAdd(address);
+//		}
 		return user;
 	}
 

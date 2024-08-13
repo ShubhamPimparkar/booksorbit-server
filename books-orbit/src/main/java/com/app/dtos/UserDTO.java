@@ -24,10 +24,14 @@ public class UserDTO {
 	private String email;
 	private String password;
 	
+	private String city;
+	private String state;
+	private String country;
+	
 	@Enumerated(EnumType.STRING)
 	private RoleEnum role;
 	
-	private AddressDTO address;
+//	private AddressDTO address;
 	
 	
 }

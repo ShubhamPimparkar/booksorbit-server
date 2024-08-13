@@ -2,6 +2,7 @@ package com.app.entites;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,10 +47,9 @@ public class Books {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-//	@OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-//	private List<CartItem> products = new ArrayList<>();
-	
 	@OneToMany(mappedBy = "books", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderItems = new ArrayList<>();
-
+	
+	@ManyToMany(mappedBy = "favoriteBooks")
+    private Set<User> users;
 }

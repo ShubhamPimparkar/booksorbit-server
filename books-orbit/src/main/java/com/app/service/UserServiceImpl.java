@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dtos.AddressDTO;
 import com.app.dtos.UserDTO;
-import com.app.dtos.UserIdDto;
 import com.app.entites.User;
 import com.app.repository.UserRepo;
 import com.app.response.ApiResponse;
@@ -19,20 +18,22 @@ import com.app.response.ApiResponse;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserRepo userRepo; 
+	private UserRepo userRepo;
 	@Autowired
-	private ModelMapper	modelMapper; 
+	private ModelMapper modelMapper;
 	
+	
+
 	@Override
 	public ApiResponse addUser(User user) {
-		
+
 		userRepo.save(user);
 		return new ApiResponse("User Inserted");
 	}
 
 	@Override
 	public List<User> getUsers() {
-		List<User> list= userRepo.findAll();
+		List<User> list = userRepo.findAll();
 		return list;
 	}
 
@@ -44,19 +45,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getById(Long userId) {
-		
+
 		return userRepo.findById(userId).get();
 	}
 
 	@Override
 	public UserDTO getUser(String email, String password) {
-		User user = userRepo.findUserByEmailAndPassword(email,password);
+		User user = userRepo.findUserByEmailAndPassword(email, password);
+		if(user!=null) {
+			System.out.println("Success USer");
+			
+		}
 		UserDTO udto = modelMapper.map(user, UserDTO.class);
-		AddressDTO add = modelMapper.map(user.getAddress(), AddressDTO.class);
-		udto.setAddress(add);
+//		AddressDTO add = modelMapper.map(user.getAddress(), AddressDTO.class);
+//		udto.setAddress(add);
 		return udto;
 	}
-
-	
 
 }
