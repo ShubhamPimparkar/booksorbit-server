@@ -1,7 +1,9 @@
 package com.app.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,6 +37,8 @@ public class UserController {
 
 	@Autowired
 	private CartService cartService;
+	@Autowired
+	private ModelMapper mapper;
 	
 	@PostMapping
 	private ResponseEntity<ApiResponse> addUser(@RequestBody UserDTO userDTO) {
@@ -55,9 +59,10 @@ public class UserController {
 	}
 	
 	@GetMapping
-	private ResponseEntity<List<User>> getUsers(){
+	private ResponseEntity<List<UserDTO>> getUsers(){
 		List<User> list = userService.getUsers();
-		return ResponseEntity.ok(list);
+		List<UserDTO> dtos = list.stream().map(l->mapper.map(l, UserDTO.class)).collect(Collectors.toList());
+		return ResponseEntity.ok(dtos);
 	}
 
 	@DeleteMapping("/{uid}")

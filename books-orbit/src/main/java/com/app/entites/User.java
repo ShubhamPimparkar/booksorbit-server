@@ -56,6 +56,7 @@ public class User {
 			CascadeType.MERGE }, orphanRemoval = true)
 	private Cart cart;
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "user_favorite_books", joinColumns = @JoinColumn(name = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "book_id"))
