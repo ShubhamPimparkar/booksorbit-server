@@ -17,30 +17,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.UserDTO;
 import com.app.dtos.UserLoginDTO;
-import com.app.entites.Address;
+
 import com.app.entites.Cart;
 import com.app.entites.User;
 import com.app.response.ApiResponse;
-import com.app.service.AddressService;
+
 import com.app.service.CartService;
 import com.app.service.UserService;
 
-@CrossOrigin
+@CrossOrigin( origins = "http://localhost:5173/" )
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private AddressService addService;
+	
 
 	@Autowired
 	private CartService cartService;
 	@Autowired
 	private ModelMapper mapper;
 	
-	@PostMapping
+
+	@PostMapping("addUser")
 	private ResponseEntity<ApiResponse> addUser(@RequestBody UserDTO userDTO) {
 		User user = convertToEntity(userDTO);
 		Cart cart = new Cart();
@@ -49,6 +49,7 @@ public class UserController {
 		cart.setUser(user);
 		cartService.addCart(cart);
 		return ResponseEntity.ok(res);
+		
 	}
 	@PostMapping("/login")
 	private ResponseEntity<UserDTO> getUserById(@RequestBody UserLoginDTO userlogin){
@@ -68,8 +69,7 @@ public class UserController {
 	@DeleteMapping("/{uid}")
 	private ResponseEntity<ApiResponse> delUser(@PathVariable Long uid) {
 		ApiResponse api =  userService.delUser(uid);
-		return ResponseEntity.ok(api);
-		
+		return ResponseEntity.ok(api);	
 	}
 	
 	private User convertToEntity(UserDTO userDTO) {
@@ -83,18 +83,7 @@ public class UserController {
 		user.setCity(userDTO.getCity());
 		user.setState(userDTO.getState());
 		user.setCountry(userDTO.getCountry());
-		
-//		if (userDTO.getAddress() != null) {
-//			Address address = new Address();
-//			address.setStreet(userDTO.getAddress().getStreet());
-//			address.setBuildingName(userDTO.getAddress().getBuildingName());
-//			address.setCity(userDTO.getAddress().getCity());
-//			address.setState(userDTO.getAddress().getState());
-//			address.setPincode(userDTO.getAddress().getPincode());
-//			address.setCountry(userDTO.getAddress().getCountry());
-//			user.setAddress(address);
-//			addService.saveAdd(address);
-//		}
+
 		return user;
 	}
 

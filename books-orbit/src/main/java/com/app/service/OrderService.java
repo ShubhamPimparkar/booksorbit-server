@@ -1,9 +1,9 @@
 package com.app.service;
 
-import com.app.dtos.OrderDTO;
+import com.app.response.ApiResponse;
 
 public interface OrderService {
 
-	OrderDTO placeOrder(String emailId, Long cartId, String paymentMethod);
+	ApiResponse placeOrder(String emailId, Double total, String status);
 
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.dtos.AddressDTO;
 import com.app.dtos.UserDTO;
 import com.app.entites.User;
 import com.app.repository.UserRepo;

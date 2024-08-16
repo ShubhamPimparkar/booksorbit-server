@@ -1,6 +1,5 @@
 package com.app.entites;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,9 +48,17 @@ public class Books {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-	@OneToMany(mappedBy = "books", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<OrderItem> orderItems = new ArrayList<>();
-	
 	@ManyToMany(mappedBy = "favoriteBooks")
     private Set<User> users;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "book", cascade = { CascadeType.REMOVE, CascadeType.PERSIST,
+			CascadeType.MERGE }, orphanRemoval = true)
+	private List<FavouriteBooks> favs;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "book", cascade = { CascadeType.REMOVE, CascadeType.PERSIST,
+			CascadeType.MERGE }, orphanRemoval = true)
+	private List<CartItem> cartitems;
+	
 }
