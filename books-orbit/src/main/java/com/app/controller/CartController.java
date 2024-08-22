@@ -22,7 +22,6 @@ import com.app.service.CartService;
 @CrossOrigin
 @RestController
 @RequestMapping("/cart")
-//@SecurityRequirement(name = "E-Commerce Application")
 public class CartController {
 	
 	@Autowired
@@ -31,7 +30,6 @@ public class CartController {
 	@PostMapping("/public/carts/{cartId}/books/{bookId}/quantity/{quantity}")
 	public ResponseEntity<CartDTO> addProductToCart(@PathVariable Long cartId, @PathVariable Long bookId, @PathVariable Integer quantity) {
 		CartDTO cartDTO = cartService.addBookToCart(cartId, bookId, quantity);
-		System.out.println("Success-------------------------");
 		return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.CREATED);
 	}
 
@@ -68,12 +66,7 @@ public class CartController {
 		return  ResponseEntity.ok(api);
 	}
 	
-//	@PutMapping("/public/carts/{cartId}/products/{productId}/quantity/{quantity}")
-//	public ResponseEntity<CartDTO> updateCartProduct(@PathVariable Long cartId, @PathVariable Long productId, @PathVariable Integer quantity) {
-//		CartDTO cartDTO = cartService.updateProductQuantityInCart(cartId, productId, quantity);
-//		
-//		return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
-//	}
+
 	
 	@DeleteMapping("cartId/{cartId}/bookId/{bookId}")
 	public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId, @PathVariable Long bookId) {
@@ -81,12 +74,5 @@ public class CartController {
 		
 		return new ResponseEntity<String>(status, HttpStatus.OK);
 	}
-	
-//
-//	@DeleteMapping("bookId/{bookId}")
-//	public ResponseEntity<ApiResponse> deletebookFromCart( @PathVariable Long bookId) {
-//		ApiResponse status = cartService.deletebookFromCart( bookId);
-//		
-//		return new ResponseEntity<ApiResponse>(status, HttpStatus.OK);
-//	}
+
 }

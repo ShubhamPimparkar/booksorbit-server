@@ -20,6 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class FavouriteBooks {
+	
 	 	@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long favId;

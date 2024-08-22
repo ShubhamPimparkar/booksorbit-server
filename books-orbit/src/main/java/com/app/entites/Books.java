@@ -33,9 +33,12 @@ public class Books {
 	private Long bookId;
 
 	private String bookName;
+	
 	private String authorName;
+	
 	@Column(length = 500)
 	private String description;
+	
 	private String imgUrl;
 	
 	private Integer quantity; 

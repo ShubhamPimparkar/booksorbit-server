@@ -16,7 +16,6 @@ import com.app.entites.Cart;
 import com.app.entites.CartItem;
 import com.app.entites.User;
 import com.app.exceptions.APIException;
-import com.app.exceptions.ResourceNotFoundException;
 import com.app.repository.BookRepo;
 import com.app.repository.CartItemRepo;
 import com.app.repository.CartRepo;
@@ -46,19 +45,16 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public CartDTO addBookToCart(Long cartId, Long bookId, Integer quantity) {
 		Cart cart = cartRepo.findById(cartId)
-				.orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
+				.orElseThrow(() -> new APIException("Cart Not Found"));
 
 		Books product = bookRepo.findById(bookId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", bookId));
-		System.out.println("Book FOund-----------------");
+				.orElseThrow(() -> new APIException("Product Not Found"));
+	
 
 		CartItem cartItem = cartItemRepo.findCartItemByCartAndBook(cart,product);
 		if (cartItem != null) {
-//			throw new APIException("Product " + product.getBookName() + " already exists in the cart");
-
-			
+		
 			cartItem.setQuantity(cartItem.getQuantity() +quantity);
-			
 
 			cartItemRepo.save(cartItem);
 
@@ -83,8 +79,7 @@ public class CartServiceImpl implements CartService {
 
 		CartItem newCartItem = new CartItem();
 		newCartItem.setCart(cart);
-		System.out.println("Cartitem FOund-----------------");
-
+		
 		
 		if (product.getQuantity() == 0) {
 			throw new APIException(product.getBookName() + " is not available");
@@ -94,8 +89,6 @@ public class CartServiceImpl implements CartService {
 			throw new APIException("Please, make an order of the " + product.getBookName()
 					+ " less than or equal to the quantity " + product.getQuantity() + ".");
 		}
-
-//		CartItem newCartItem = new CartItem();
 
 		newCartItem.setBook(product);
 		newCartItem.setCart(cart);
@@ -147,16 +140,16 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public String deleteProductFromCart(Long cartId, Long bookId) {
 		Cart cart = cartRepo.findById(cartId)
-				.orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
+				.orElseThrow(() -> new APIException("Cart Not Found "));
 		Books book1 = bookRepo.findById(bookId)
-				.orElseThrow(() -> new ResourceNotFoundException("Books", "bookId", bookId));
+				.orElseThrow(() -> new APIException("Books Not Found"));
 		
 
 		CartItem cartItem = cartItemRepo.findByBookAndCart(book1, cart);
 		
 		
 		if (cartItem == null) {
-			throw new ResourceNotFoundException("Books", "bookId", bookId);
+			throw new APIException("Books Not Found");
 		}
 
 		cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getBookPrice() * cartItem.getQuantity()));
@@ -178,7 +171,7 @@ public class CartServiceImpl implements CartService {
 		Cart cart = cartRepo.findByUser(user);
 
 		if (cart == null) {
-			throw new ResourceNotFoundException("User", "emailId", emailId);
+			throw new APIException("User not found");
 		}
 
 		CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);

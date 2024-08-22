@@ -40,17 +40,12 @@ public class User {
 	private String mobileNumber;
 	private String email;
 	private String password;
-
 	private String city;
 	private String state;
 	private String country;
 
 	@Enumerated(EnumType.STRING)
 	private RoleEnum role;
-
-//	@OneToOne(cascade = CascadeType.REMOVE,orphanRemoval = true)
-//	@JoinColumn(name = "address_id")
-//	private Address address;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "seller", cascade = { CascadeType.REMOVE, CascadeType.PERSIST,

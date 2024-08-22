@@ -53,8 +53,6 @@ public class UserController {
 	}
 	@PostMapping("/login")
 	private ResponseEntity<UserDTO> getUserById(@RequestBody UserLoginDTO userlogin){
-		System.out.println(userlogin.getUsername());
-		System.out.println(userlogin.getPassword());
 		UserDTO dto = userService.getUser(userlogin.getUsername(),userlogin.getPassword());
 		return  ResponseEntity.ok(dto);
 	}
@@ -83,7 +81,6 @@ public class UserController {
 		user.setCity(userDTO.getCity());
 		user.setState(userDTO.getState());
 		user.setCountry(userDTO.getCountry());
-
 		return user;
 	}
 

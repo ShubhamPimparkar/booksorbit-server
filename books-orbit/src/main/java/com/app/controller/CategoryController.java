@@ -35,12 +35,14 @@ public class CategoryController {
 		Category cat = modelMapper.map(catDTO, Category.class);
 		return ResponseEntity.ok(catService.addCat(cat));
 	}
+	
 	@GetMapping
 	private ResponseEntity<List<CatDTO>> getCat() { 
 		List<Category> list = catService.getCat();
 		List<CatDTO> collect = list.stream().map(category -> modelMapper.map(category, CatDTO.class)).collect(Collectors.toList());	
 		return ResponseEntity.ok(collect) ;
 	}
+	
 	@GetMapping("/{catid}")
 	private ResponseEntity<CatDTO> getCatById(@PathVariable Long catid){
 		Category cat = catService.getById(catid);

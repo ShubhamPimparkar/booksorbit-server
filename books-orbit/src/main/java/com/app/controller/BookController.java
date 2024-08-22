@@ -52,7 +52,6 @@ public class BookController {
 	private ResponseEntity<ApiResponse> addBook(@RequestBody BookDTO bookDto) {
 		Books book = mapToEntity(bookDto);
 		return ResponseEntity.ok(bookService.addBook(book));
-
 	}
 
 	@GetMapping
@@ -94,8 +93,6 @@ public class BookController {
 
 	@DeleteMapping("/delfav/{bid}/{uid}")
 	public void removeFavorite(@PathVariable Long uid, @PathVariable Long bid) {
-		System.out.println(uid);
-		System.out.println(bid);
 		FavouriteBooks favoriteBook = favRepo.findAll().stream()
 				.filter(fb -> fb.getUser().getUserId().equals(uid) && fb.getBook().getBookId().equals(bid))
 				.findFirst().orElseThrow(() -> new RuntimeException("Favorite not found"));
