@@ -1,4 +1,4 @@
-#Books Orbit - E comm web application
+#Books Orbit - E comm website
 
 Images of website is available in images folder.
 
