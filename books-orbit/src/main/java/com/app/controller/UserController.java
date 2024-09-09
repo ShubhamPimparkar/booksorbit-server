@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.UserDTO;
 import com.app.dtos.UserLoginDTO;
-
 import com.app.entites.Cart;
 import com.app.entites.User;
 import com.app.response.ApiResponse;
-
 import com.app.service.CartService;
 import com.app.service.UserService;
 
@@ -33,6 +32,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	 @Autowired
+	 private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private CartService cartService;
@@ -71,12 +72,14 @@ public class UserController {
 	}
 	
 	private User convertToEntity(UserDTO userDTO) {
+		
 		User user = new User();
+		String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setEmail(userDTO.getEmail());
 		user.setMobileNumber(userDTO.getMobileNumber());
-		user.setPassword(userDTO.getPassword());
+		user.setPassword(encodedPassword);
 		user.setRole(userDTO.getRole());
 		user.setCity(userDTO.getCity());
 		user.setState(userDTO.getState());

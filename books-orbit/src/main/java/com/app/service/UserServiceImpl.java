@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,8 @@ public class UserServiceImpl implements UserService {
 	private UserRepo userRepo;
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public ApiResponse addUser(User user) {
@@ -50,15 +51,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO getUser(String email, String password) {
-		User user = userRepo.findUserByEmailAndPassword(email, password);
-		if(user!=null) {
-			System.out.println("Success USer");
-			
+		User user = userRepo.findUserByEmail(email);
+		if (user != null) {
+			passwordEncoder.matches(password, user.getPassword());
+			UserDTO udto = modelMapper.map(user, UserDTO.class);
+			return udto;
+		} else {
+			return null;
 		}
-		UserDTO udto = modelMapper.map(user, UserDTO.class);
-//		AddressDTO add = modelMapper.map(user.getAddress(), AddressDTO.class);
-//		udto.setAddress(add);
-		return udto;
+
 	}
 
 }
